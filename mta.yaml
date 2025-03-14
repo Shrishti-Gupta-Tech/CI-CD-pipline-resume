@@ -1,0 +1,41 @@
+_schema-version: "3.1"
+ID: ai-resume-generator
+version: 1.0.0
+description: "AI-Based Resume Generator using Spring Boot and React"
+
+modules:
+  # 🔹 Frontend Module (React + Vite)
+  - name: ai-resume-frontend
+    type: html5
+    path: resume_frontend
+    build-parameters:
+      builder: npm
+      ignore: [ "node_modules/" ]
+      build-result: dist
+    requires:
+      - name: ai-resume-backend
+    properties:
+      UI5_ENABLE_STATIC_CACHE_CONTROL: "true"
+
+  # 🔹 Backend Module (Spring Boot)
+  - name: ai-resume-backend
+    type: java
+    path: resume_backend
+    parameters:
+      memory: 1G
+      disk-quota: 1G
+      buildpack: sap_java_buildpack
+    build-parameters:
+      builder: maven
+      build-result: target/resume-ai-backend-0.0.1-SNAPSHOT.jar
+    properties:
+      SPRING_PROFILES_ACTIVE: "cloud"
+    provides:
+      - name: backend_api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: ai-resume-db
+
+resources:
+
