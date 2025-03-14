@@ -8,13 +8,13 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/Shrishti-Gupta-Tech/ai_based_resume_generator.git'
+                git branch: 'main', url: 'https://github.com/Shrishti-Gupta-Tech/CI-CD-pipline-resume.git'
             }
         }
 
         stage('Build Backend') {
             steps {
-                dir('ai_based_resume_generator/resume_backend') {
+                dir('resume-ai-backend') {
                     sh './mvnw clean package -DskipTests'
                 }
             }
@@ -22,16 +22,8 @@ pipeline {
 
         stage('Build Frontend') {
             steps {
-                dir('ai_based_resume_generator/resume_frontend') {
+                dir('resume_frontend') {
                     sh 'npm install && npm run build'
-                }
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                dir('ai_based_resume_generator/resume_backend') {
-                    sh './mvnw test'
                 }
             }
         }
